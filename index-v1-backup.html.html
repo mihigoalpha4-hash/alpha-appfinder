@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080c14">
+<meta name="description" content="Find, save and compare apps by what you want to get done.">
+<title>ALPHA AppFinder — Discover Your Next Tool</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#080c14;--panel:#101725;--panel2:#151f30;
+  --text:#f3f7ff;--muted:#96a4ba;--cyan:#55e6ff;
+  --purple:#a78bfa;--green:#83f5bd;--border:#b1ccf020;
+  --radius:20px;--shadow:0 20px 65px #0005;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{
+  margin:0;min-height:100vh;padding-bottom:env(safe-area-inset-bottom,0px);color:var(--text);
+  background:radial-gradient(ellipse at 8% 0%,#10243a,transparent 35%),
+  radial-gradient(ellipse at 95% 12%,#211536,transparent 30%),var(--bg);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55
+}
+button,input,select{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+a{color:inherit;text-decoration:none}
+button{color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{
+  outline:2px solid var(--cyan);outline-offset:4px
+}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none!important}
+.container{width:min(1160px,92%);margin:auto}
+.topline{height:3px;background:linear-gradient(90deg,var(--cyan),#8d83ff,#ff83c7)}
+header{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:10;backdrop-filter:blur(18px);
+  background:#080c14e8;border-bottom:1px solid var(--border)
+}
+.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{display:inline-flex;align-items:center;gap:11px;font-size:17px;font-weight:850;letter-spacing:-.6px}
+.brand-icon{
+  display:grid;place-items:center;flex-shrink:0;width:56px;height:56px;
+  background:radial-gradient(circle at 50% 43%,#14243a 0%,#080a0d 65%);
+  border:1px solid #92704399;border-radius:15px;
+  box-shadow:0 0 25px #1268d833,inset 0 0 14px #b1803b16;overflow:hidden
+}
+.brand-icon svg{width:54px;height:54px;display:block}
+.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:2px;font-weight:700}
+.gradient-text{background:linear-gradient(95deg,var(--cyan),#a9b1ff 60%,#d9a7ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav-right{display:flex;align-items:center;gap:9px}
+.pill,.button{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  border:1px solid var(--border);border-radius:12px;padding:10px 15px;
+  background:#ffffff08;transition:transform .2s,border-color .2s;
+  min-height:44px;font-weight:750;font-size:13px
+}
+.pill:hover,.button:hover{border-color:#55e6ff77;transform:translateY(-2px)}
+.button.primary{color:#06121a;background:var(--cyan);border-color:var(--cyan)}
+.pill.active{border-color:#55e6ff80;color:var(--cyan)}
+.hero{padding:72px 0 43px;text-align:center}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;padding:8px 13px;
+  border:1px solid #55e6ff30;background:#55e6ff0b;border-radius:100px;
+  color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:1.4px
+}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
+h1{max-width:850px;margin:25px auto 17px;font-size:clamp(40px,7vw,76px);letter-spacing:-4px;line-height:1.04;font-weight:850}
+.hero>p{max-width:640px;margin:0 auto;color:var(--muted);font-size:16px}
+.search-wrap{
+  display:flex;align-items:center;gap:12px;width:min(680px,100%);
+  margin:31px auto 17px;padding:8px 9px 8px 18px;background:#121b29;
+  border:1px solid #55e6ff45;border-radius:17px;box-shadow:var(--shadow)
+}
+.search-icon{color:var(--cyan);font-size:22px}
+.search-wrap input{flex:1;width:100%;min-width:0;border:0;outline:none;color:var(--text);background:transparent;font-size:14px}
+.search-wrap input::placeholder{color:#718198}
+.search-wrap button{min-height:44px;border:0;border-radius:11px;padding:12px 17px;background:var(--cyan);color:#06121a;font-weight:850}
+.quick-tags{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;color:var(--muted);font-size:12px}
+.quick-tags button{min-height:44px;color:#c2cee0;background:#ffffff08;border:1px solid var(--border);border-radius:100px;padding:6px 11px}
+.quick-tags button:hover{border-color:#55e6ff66;color:var(--cyan)}
+.trust-strip{display:flex;justify-content:center;flex-wrap:wrap;gap:12px 28px;margin-top:30px;color:#b9c8d9;font-size:12px}
+.trust-strip span{display:flex;align-items:center;gap:7px}
+.trust-strip b{color:var(--green)}
+.section{padding:30px 0 42px}
+.section-heading{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:22px}
+.section-heading h2{margin:0;font-size:clamp(23px,4vw,32px);letter-spacing:-1px}
+.section-heading p{color:var(--muted);margin:5px 0 0;font-size:13px}
+.text-button{min-height:44px;border:0;background:transparent;color:var(--cyan);font-size:13px;font-weight:750}
+.categories{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.category{
+  text-align:left;border:1px solid var(--border);border-radius:17px;
+  padding:18px 14px;background:linear-gradient(145deg,#151f30,#0d1420);transition:.2s
+}
+.category:hover,.category.active{transform:translateY(-3px);border-color:#55e6ff70;background:linear-gradient(145deg,#172c3b,#111a2a)}
+.category.active{box-shadow:inset 0 0 0 1px #55e6ff30}
+.category .emoji{font-size:25px;display:block;margin-bottom:12px}
+.category strong{display:block;font-size:13px}
+.category small{display:block;margin-top:4px;color:var(--muted);font-size:11px}
+.catalog{padding-top:30px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:13px;margin-bottom:17px}
+.toolbar-left,.toolbar-right{display:flex;flex-wrap:wrap;align-items:center;gap:9px}
+.filter{min-height:44px;border:1px solid var(--border);border-radius:10px;padding:9px 12px;background:#101725;color:#dce6f5;font-size:12px}
+.filter.active{color:var(--cyan);border-color:#55e6ff66;background:#55e6ff0c}
+.result-count{color:var(--muted);font-size:12px}
+.app-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.app-card{
+  position:relative;display:flex;flex-direction:column;min-width:0;padding:20px;
+  border:1px solid var(--border);border-radius:var(--radius);
+  background:linear-gradient(155deg,#131d2c,#0c121e 75%);transition:.2s;
+  animation:rise .3s ease both
+}
+.app-card:hover{transform:translateY(-4px);border-color:#55e6ff50}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.app-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.app-icon{display:grid;place-items:center;flex-shrink:0;width:54px;height:54px;border-radius:16px;border:1px solid #ffffff13;background:#ffffff08;font-size:27px}
+.save{width:44px;height:44px;border-radius:11px;border:1px solid var(--border);background:#ffffff05;color:#a9b7cb;font-size:19px}
+.save.saved{color:#ff91c7;border-color:#ff91c750}
+.app-card h3{margin:17px 0 4px;font-size:18px;letter-spacing:-.4px}
+.developer{color:var(--muted);font-size:11px}
+.app-description{min-height:61px;color:#bdc9d9;font-size:13px;margin:13px 0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{padding:5px 8px;border-radius:7px;background:#ffffff08;border:1px solid #ffffff0c;color:#b9c8db;font-size:10px}
+.tag.free{color:var(--green);background:#83f5bd0a}
+.tag.paid{color:#f7d58a}
+.app-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--border);padding-top:15px;margin-top:auto}
+.compare-check{display:flex;align-items:center;gap:6px;min-height:44px;color:#bdc9d9;font-size:11px;cursor:pointer}
+.compare-check input{accent-color:var(--cyan)}
+.app-footer .button{min-height:44px;padding:9px 11px;font-size:11px}
+.empty{grid-column:1/-1;text-align:center;padding:55px 20px;border:1px dashed #ffffff25;border-radius:var(--radius);color:var(--muted)}
+.empty strong{display:block;color:var(--text);font-size:20px}
+.compare-panel{border:1px solid #55e6ff55;border-radius:20px;padding:20px;background:linear-gradient(135deg,#112334,#121327);margin-bottom:22px}
+.compare-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.compare-head h3{margin:0;font-size:19px}
+.compare-selected{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.compare-chip{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--border);border-radius:10px;background:#ffffff08;font-size:12px}
+.compare-chip button{border:0;background:transparent;color:#ff9eae;font-size:16px}
+.compare-table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px}
+.compare-table{width:100%;min-width:520px;border-collapse:collapse;font-size:12px}
+.compare-table th,.compare-table td{text-align:left;vertical-align:top;padding:12px;border-bottom:1px solid var(--border);overflow-wrap:anywhere}
+.compare-table th{color:var(--cyan);background:#ffffff05}
+.compare-table tr:last-child td{border-bottom:0}
+.compare-table td:first-child{color:var(--muted);font-weight:700;width:110px}
+.mission{
+  position:relative;overflow:hidden;padding:36px;border:1px solid #55e6ff30;border-radius:24px;
+  background:radial-gradient(ellipse at 100% 0%,#6250a82b,transparent 50%),linear-gradient(120deg,#122333,#101523)
+}
+.mission h2{max-width:650px;font-size:clamp(25px,4vw,38px);line-height:1.15;letter-spacing:-1px;margin:14px 0}
+.mission p{max-width:640px;color:#aabbd0;font-size:14px}
+.mission .button{margin-top:9px}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.how-card{padding:20px;border:1px solid var(--border);border-radius:17px;background:#ffffff04}
+.how-card .step{color:var(--cyan);font-size:12px;font-weight:850;letter-spacing:1px}
+.how-card h3{font-size:16px;margin:10px 0 6px}
+.how-card p{color:var(--muted);font-size:12px;margin:0}
+.resource-tools{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 18px}
+.resource-search{display:flex;align-items:center;gap:9px;min-height:44px;flex:1 1 250px;max-width:380px;padding:8px 12px;border:1px solid var(--border);border-radius:11px;background:#101725;color:var(--cyan)}
+.resource-search input{width:100%;min-width:0;border:0;outline:none;background:transparent;color:var(--text);font-size:12px}
+.resource-search input::placeholder{color:#718198}
+.resource-filters{display:flex;flex-wrap:wrap;gap:7px}
+.resource-filters button{min-height:40px;padding:7px 11px;border:1px solid var(--border);border-radius:10px;background:#ffffff06;color:#c2cee0;font-size:11px;font-weight:700}
+.resource-filters button.active{border-color:#55e6ff66;background:#55e6ff0c;color:var(--cyan)}
+.resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.resource-card{display:flex;flex-direction:column;min-height:190px;padding:18px;border:1px solid var(--border);border-radius:15px;background:linear-gradient(150deg,#141f2d,#0d1420);transition:transform .2s,border-color .2s}
+.resource-card:hover{transform:translateY(-3px);border-color:#55e6ff60}
+.resource-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.resource-icon{display:grid;place-items:center;width:40px;height:40px;border:1px solid #ffffff15;border-radius:12px;background:#ffffff08;font-size:19px}
+.resource-category{color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
+.resource-card h3{margin:13px 0 4px;font-size:15px}
+.resource-card p{margin:0 0 15px;color:#b9c6d7;font-size:12px;line-height:1.55}
+.resource-link{display:inline-flex;align-items:center;gap:6px;min-height:40px;margin-top:auto;color:var(--green);font-size:12px;font-weight:800}
+.resource-empty{grid-column:1/-1;padding:30px;text-align:center;color:var(--muted);border:1px dashed #ffffff25;border-radius:14px}
+footer{margin-top:30px;border-top:1px solid var(--border);padding:28px 0 38px;color:var(--muted);font-size:12px}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+footer strong{color:var(--text)}
+.modal-backdrop{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:18px;background:#03060bd9;backdrop-filter:blur(9px)}
+.modal{width:min(540px,100%);max-height:85vh;overflow-y:auto;padding:25px;border:1px solid #55e6ff40;border-radius:22px;background:#111a28;box-shadow:0 30px 100px #0008}
+.modal-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+.modal h2{margin:0 0 5px;font-size:25px}
+.modal p{color:#b8c6d8;font-size:14px}
+.modal h3{font-size:14px;margin-top:23px}
+.close{border:1px solid var(--border);background:#ffffff08;border-radius:10px;width:44px;height:44px}
+.modal-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.notice{margin:12px 0 0;color:var(--muted);font-size:11px}
+.toast{
+  position:fixed;z-index:50;bottom:22px;left:50%;transform:translateX(-50%);
+  max-width:90%;padding:11px 16px;border:1px solid #55e6ff50;border-radius:12px;
+  background:#121f2e;color:var(--text);box-shadow:var(--shadow);font-size:13px
+}
+.hidden{display:none!important}
+@media(max-width:850px){
+  .categories{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .app-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .resource-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{padding-top:55px}h1{letter-spacing:-2.5px}
+}
+@media(max-width:540px){
+  .nav{min-height:66px}.brand{font-size:13px}.brand-icon{width:44px;height:44px}
+  .brand-icon svg{width:42px;height:42px}
+  .brand small{letter-spacing:1.3px;font-size:8px}
+  .nav-right{gap:5px}.nav-right .pill,.nav-right .button{padding:8px;font-size:10px}
+  .hero{padding:45px 0 30px}h1{font-size:42px;letter-spacing:-2px}
+  .hero>p{font-size:14px}.search-wrap{gap:7px;padding-left:10px}
+  .search-wrap button{padding:11px 9px;font-size:12px}
+  .categories{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .app-grid{grid-template-columns:1fr}.app-description{min-height:0}
+  .resource-grid{grid-template-columns:1fr}.resource-search{max-width:none}
+  .how-grid{grid-template-columns:1fr}.mission{padding:24px}
+  .section-heading{align-items:flex-start}.toolbar{align-items:flex-start}
+  .result-count{width:100%}.compare-panel{padding:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="topline"></div>
+<header>
+  <div class="container nav">
+    <a class="brand" href="#" aria-label="ALPHA AppFinder home">
+      <span class="brand-icon">
+        <svg viewBox="0 0 96 96" role="img" aria-label="Dark bronze ALPHA emblem with a blue sword-star and orbital ring">
+          <defs>
+            <linearGradient id="alphaSteel" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#8e7958"/>
+              <stop offset="24%" stop-color="#242322"/>
+              <stop offset="54%" stop-color="#080d12"/>
+              <stop offset="78%" stop-color="#51432f"/>
+              <stop offset="100%" stop-color="#11171c"/>
+            </linearGradient>
+            <linearGradient id="alphaBronze" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#e1bd7c"/>
+              <stop offset="38%" stop-color="#80613c"/>
+              <stop offset="70%" stop-color="#3e3325"/>
+              <stop offset="100%" stop-color="#c29a5d"/>
+            </linearGradient>
+            <linearGradient id="alphaOrbit" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#d0a76c"/>
+              <stop offset="48%" stop-color="#557cb1"/>
+              <stop offset="100%" stop-color="#8b6840"/>
+            </linearGradient>
+            <radialGradient id="alphaStar">
+              <stop offset="0%" stop-color="#ffffff"/>
+              <stop offset="22%" stop-color="#bfeaff"/>
+              <stop offset="58%" stop-color="#398eff"/>
+              <stop offset="100%" stop-color="#123978"/>
+            </radialGradient>
+            <filter id="alphaGlow" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur stdDeviation="3.2" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="alphaSmoke" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="3"/>
+            </filter>
+          </defs>
+          <path d="M13 63c8-12 15-11 20-20s12-6 18-15 15-7 25 3" fill="none" stroke="#58718b" stroke-width="8" opacity=".17" filter="url(#alphaSmoke)"/>
+          <ellipse cx="48" cy="51" rx="41" ry="19" transform="rotate(-28 48 51)" fill="none" stroke="url(#alphaOrbit)" stroke-width="2.2" opacity=".92"/>
+          <path d="M48 10 15 82h17l16-37 16 37h17L48 10Z" fill="url(#alphaSteel)" stroke="url(#alphaBronze)" stroke-width="2.3" stroke-linejoin="round"/>
+          <path d="m48 17-24 58h5l19-43 19 43h5L48 17Z" fill="none" stroke="#d0b27d" stroke-width="1" opacity=".62"/>
+          <path d="M34 61h28" stroke="#17130e" stroke-width="8" stroke-linecap="square"/>
+          <path d="M35 60h26" stroke="url(#alphaBronze)" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M48 24 52 43 69 49 52 53 48 74 44 53 27 49 44 43Z" fill="url(#alphaStar)" filter="url(#alphaGlow)"/>
+          <path d="M48 29v39" stroke="#d5f4ff" stroke-width="1.2" opacity=".86" filter="url(#alphaGlow)"/>
+          <path d="M9 55c9 14 22 22 39 22s30-8 39-22" fill="none" stroke="url(#alphaOrbit)" stroke-width="2.4" stroke-linecap="round"/>
+          <circle cx="11" cy="53" r="2.2" fill="#c6a46d"/>
+          <circle cx="85" cy="56" r="2" fill="#6eb9ff"/>
+        </svg>
+      </span>
+      <span>ALPHA <span class="gradient-text">AppFinder</span><small>TOOLS FOR YOUR NEXT LEVEL</small></span>
+    </a>
+    <div class="nav-right">
+      <button class="pill" id="savedNav" type="button" aria-pressed="false">♡ Saved <span id="savedCount">0</span></button>
+      <a class="button primary" href="#explore">Explore ↗</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero container">
+  <div class="eyebrow"><span class="pulse"></span> DISCOVER BETTER DIGITAL TOOLS</div>
+  <h1>Less searching.<br><span class="gradient-text">More becoming.</span></h1>
+  <p>Find digital tools for studying, planning, creating and working. Explore the options, compare trade-offs and choose what fits your needs.</p>
+  <form class="search-wrap" id="searchForm" role="search">
+    <span class="search-icon" aria-hidden="true">⌕</span>
+    <input id="searchInput" type="search" placeholder="What do you want help with today?" aria-label="Search tools by name, purpose or feature">
+    <button type="submit">Find tools ↗</button>
+  </form>
+  <div class="quick-tags"><span>Try:</span>
+    <button type="button" data-query="flashcards">Flashcards</button>
+    <button type="button" data-query="planning">Planning</button>
+    <button type="button" data-query="design">Design</button>
+    <button type="button" data-query="notes">Notes</button>
+  </div>
+  <div class="trust-strip">
+    <span><b>✓</b> Curated selections</span><span><b>✓</b> Clear pricing labels</span><span><b>✓</b> Honest trade-offs</span>
+  </div>
+</section>
+
+<section class="section container" id="categories">
+  <div class="section-heading"><div><h2>What are you working on?</h2><p>Start with your goal. Find tools that fit it.</p></div></div>
+  <div class="categories" id="categoryGrid">
+    <button class="category active" data-category="All" aria-pressed="true"><span class="emoji">✳️</span><strong>Everything</strong><small>Explore all tools</small></button>
+    <button class="category" data-category="Study" aria-pressed="false"><span class="emoji">📚</span><strong>Study smarter</strong><small>Learn and revise</small></button>
+    <button class="category" data-category="Planning" aria-pressed="false"><span class="emoji">🎯</span><strong>Get organized</strong><small>Plan your day</small></button>
+    <button class="category" data-category="Creative" aria-pressed="false"><span class="emoji">🎨</span><strong>Create more</strong><small>Design and write</small></button>
+    <button class="category" data-category="Storage" aria-pressed="false"><span class="emoji">☁️</span><strong>Stay connected</strong><small>Save and share</small></button>
+  </div>
+</section>
+
+<section class="section container catalog" id="explore">
+  <div class="section-heading">
+    <div><h2 id="catalogTitle">Explore the collection<span class="gradient-text">.</span></h2><p>Understand what each tool does before you choose.</p></div>
+    <button class="text-button" id="resetButton" type="button">Reset filters ↺</button>
+  </div>
+  <div class="toolbar">
+    <div class="toolbar-left" id="priceFilters">
+      <button class="filter active" data-price="All" aria-pressed="true">All prices</button>
+      <button class="filter" data-price="Free" aria-pressed="false">Free to use</button>
+      <button class="filter" data-price="Freemium" aria-pressed="false">Free + paid plans</button>
+      <button class="filter" data-price="Paid" aria-pressed="false">Paid</button>
+    </div>
+    <div class="toolbar-right">
+      <label class="result-count" for="sortSelect">Sort:</label>
+      <select class="filter" id="sortSelect" aria-label="Sort tool listings">
+        <option value="featured">Curated order</option><option value="az">Name A–Z</option>
+      </select>
+    </div>
+  </div>
+
+  <section class="compare-panel" aria-labelledby="compareHeading">
+    <div class="compare-head">
+      <div><h3 id="compareHeading">⚡ Compare tools</h3><div class="result-count">Choose up to 3 tools using the checkboxes on their cards.</div></div>
+      <button class="button" id="clearCompare" type="button">Clear comparison</button>
+    </div>
+    <div class="compare-selected" id="compareSelected" aria-live="polite"></div>
+    <div id="comparisonOutput"></div>
+  </section>
+
+  <p class="result-count" id="resultCount" aria-live="polite"></p>
+  <div class="app-grid" id="appGrid"></div>
+</section>
+
+<section class="section container" id="useful-links" aria-labelledby="resourcesTitle">
+  <div class="section-heading">
+    <div><h2 id="resourcesTitle">Good places to start<span class="gradient-text">.</span></h2><p>Hand-picked websites for learning, making, researching and getting things done.</p></div>
+  </div>
+  <div class="resource-tools">
+    <label class="resource-search"><span aria-hidden="true">⌕</span><input id="resourceSearch" type="search" placeholder="Search useful links..." aria-label="Search useful links"></label>
+    <div class="resource-filters" role="group" aria-label="Filter useful links by category">
+      <button type="button" class="active" data-resource-filter="All" aria-pressed="true">Everything</button>
+      <button type="button" data-resource-filter="Learning" aria-pressed="false">Learning</button>
+      <button type="button" data-resource-filter="Research" aria-pressed="false">Research</button>
+      <button type="button" data-resource-filter="Creative" aria-pressed="false">Creative</button>
+      <button type="button" data-resource-filter="Everyday" aria-pressed="false">Everyday</button>
+    </div>
+  </div>
+  <p class="result-count" id="resourceCount" aria-live="polite"></p>
+  <div class="resource-grid" id="resourceGrid">
+    <article class="resource-card" data-resource-category="Learning"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">📖</span><span class="resource-category">Learning</span></div><h3>Khan Academy</h3><p>Free lessons and practice in math, science, computing, history and more.</p><a class="resource-link" href="https://www.khanacademy.org/" target="_blank" rel="noopener noreferrer">Explore lessons ↗</a></article>
+    <article class="resource-card" data-resource-category="Learning"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">🎓</span><span class="resource-category">Learning</span></div><h3>MIT OpenCourseWare</h3><p>Study course materials from MIT, including lecture notes, assignments and exams.</p><a class="resource-link" href="https://ocw.mit.edu/" target="_blank" rel="noopener noreferrer">Browse courses ↗</a></article>
+    <article class="resource-card" data-resource-category="Learning"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">📚</span><span class="resource-category">Learning</span></div><h3>OpenStax</h3><p>Read free, peer-reviewed textbooks for popular school and college subjects.</p><a class="resource-link" href="https://openstax.org/" target="_blank" rel="noopener noreferrer">Find a textbook ↗</a></article>
+    <article class="resource-card" data-resource-category="Learning"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">⌨️</span><span class="resource-category">Learning</span></div><h3>freeCodeCamp</h3><p>Learn web development and programming with interactive lessons and projects.</p><a class="resource-link" href="https://www.freecodecamp.org/learn/" target="_blank" rel="noopener noreferrer">Start coding ↗</a></article>
+    <article class="resource-card" data-resource-category="Research"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">🔎</span><span class="resource-category">Research</span></div><h3>Google Scholar</h3><p>Search scholarly articles, theses, books and citations from many disciplines.</p><a class="resource-link" href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer">Search research ↗</a></article>
+    <article class="resource-card" data-resource-category="Research"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">🌍</span><span class="resource-category">Research</span></div><h3>Our World in Data</h3><p>Explore research and clear visualizations on global health, society and the environment.</p><a class="resource-link" href="https://ourworldindata.org/" target="_blank" rel="noopener noreferrer">Explore the data ↗</a></article>
+    <article class="resource-card" data-resource-category="Research"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">🧬</span><span class="resource-category">Research</span></div><h3>PubMed</h3><p>Find biomedical and life-sciences literature from the U.S. National Library of Medicine.</p><a class="resource-link" href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener noreferrer">Search articles ↗</a></article>
+    <article class="resource-card" data-resource-category="Creative"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">🖼️</span><span class="resource-category">Creative</span></div><h3>Photopea</h3><p>Edit image files in your browser with layers and familiar design tools.</p><a class="resource-link" href="https://www.photopea.com/" target="_blank" rel="noopener noreferrer">Open editor ↗</a></article>
+    <article class="resource-card" data-resource-category="Creative"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">✏️</span><span class="resource-category">Creative</span></div><h3>Excalidraw</h3><p>Sketch diagrams and explain ideas on a simple collaborative whiteboard.</p><a class="resource-link" href="https://excalidraw.com/" target="_blank" rel="noopener noreferrer">Draw an idea ↗</a></article>
+    <article class="resource-card" data-resource-category="Creative"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">📷</span><span class="resource-category">Creative</span></div><h3>Unsplash</h3><p>Discover photographs for presentations, personal projects and visual inspiration.</p><a class="resource-link" href="https://unsplash.com/" target="_blank" rel="noopener noreferrer">Browse photos ↗</a></article>
+    <article class="resource-card" data-resource-category="Everyday"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">🌐</span><span class="resource-category">Everyday</span></div><h3>DeepL</h3><p>Translate text between languages and check phrasing while you write.</p><a class="resource-link" href="https://www.deepl.com/translator" target="_blank" rel="noopener noreferrer">Translate text ↗</a></article>
+    <article class="resource-card" data-resource-category="Everyday"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">➗</span><span class="resource-category">Everyday</span></div><h3>Wolfram|Alpha</h3><p>Get computational answers for math, unit conversions, science and more.</p><a class="resource-link" href="https://www.wolframalpha.com/" target="_blank" rel="noopener noreferrer">Ask a question ↗</a></article>
+    <article class="resource-card" data-resource-category="Everyday"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">🛠️</span><span class="resource-category">Everyday</span></div><h3>MDN Web Docs</h3><p>Use practical references and guides for HTML, CSS, JavaScript and the web.</p><a class="resource-link" href="https://developer.mozilla.org/" target="_blank" rel="noopener noreferrer">Visit the docs ↗</a></article>
+    <article class="resource-card" data-resource-category="Everyday"><div class="resource-card-top"><span class="resource-icon" aria-hidden="true">🏛️</span><span class="resource-category">Everyday</span></div><h3>Internet Archive</h3><p>Access a vast digital library of books, recordings, films and archived webpages.</p><a class="resource-link" href="https://archive.org/" target="_blank" rel="noopener noreferrer">Visit the archive ↗</a></article>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="mission">
+    <div class="eyebrow">THE ALPHA STANDARD</div>
+    <h2>Don't download everything.<br><span class="gradient-text">Find what works for you.</span></h2>
+    <p>We're building a thoughtful way to discover digital tools: clear explanations, honest trade-offs and recommendations organized around real goals — not hype.</p>
+    <a class="button primary" href="#explore">Find your next tool ↗</a>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-heading"><div><h2>Discovery, done differently.</h2><p>Our principles for helping people make better choices.</p></div></div>
+  <div class="how-grid">
+    <article class="how-card"><span class="step">01 / CLARITY</span><h3>Know what you're getting</h3><p>Understand each tool's main purpose and pricing category before visiting its website.</p></article>
+    <article class="how-card"><span class="step">02 / TRANSPARENCY</span><h3>No invented ratings</h3><p>We don't manufacture user reviews or popularity scores. This is a curated sample collection.</p></article>
+    <article class="how-card"><span class="step">03 / YOUR CHOICE</span><h3>Compare before committing</h3><p>Explore alternatives, read pros and cons, and decide which tool suits your needs.</p></article>
+  </div>
+</section>
+</main>
+
+<footer><div class="container footer-inner">
+  <div><strong>ALPHA AppFinder</strong><br>Built to help people find better digital tools.</div>
+  <div>Independent discovery project · Prototype</div>
+  <div>App names and trademarks belong to their respective owners.</div>
+</div></footer>
+
+<div class="modal-backdrop hidden" id="modalBackdrop" role="presentation">
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription">
+    <div class="modal-head">
+      <div><div class="eyebrow" id="modalCategory">APP DETAILS</div><h2 id="modalTitle" style="margin-top:15px"></h2><div class="developer" id="modalDeveloper"></div></div>
+      <button class="close" id="closeModal" type="button" aria-label="Close details">✕</button>
+    </div>
+    <p id="modalDescription"></p>
+    <h3>Why consider it?</h3><p id="modalPros"></p>
+    <h3>Things to consider</h3><p id="modalCons"></p>
+    <h3>Pricing</h3><p id="modalPricing"></p>
+    <div class="modal-actions">
+      <a class="button primary" id="officialLink" href="#" target="_blank" rel="noopener noreferrer">Visit official website ↗</a>
+      <button class="button" id="modalSave" type="button">♡ Save tool</button>
+    </div>
+    <p class="notice">Pricing and features can change. Confirm current terms on the official website before signing up or paying.</p>
+  </section>
+</div>
+<div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+
+const apps = [
+{id:"notion",name:"Notion",icon:"◈",developer:"Notion Labs",category:"Planning",price:"Freemium",description:"Organize notes, projects, documents and study plans in one workspace.",tags:["Notes","Planning","Workspace"],pros:"Flexible pages and databases can bring many kinds of work together.",cons:"The many options can take time to learn, and some features require a paid plan.",pricing:"Free plan and paid plans; check current limits.",url:"https://www.notion.com/"},
+{id:"quizlet",name:"Quizlet",icon:"🗂️",developer:"Quizlet",category:"Study",price:"Freemium",description:"Practice concepts with digital flashcards and study activities.",tags:["Flashcards","Revision","Study"],pros:"A familiar flashcard format makes reviewing key terms straightforward.",cons:"Some features are paid, and the quality of shared study sets varies.",pricing:"Free access with optional paid features; verify current terms.",url:"https://quizlet.com/"},
+{id:"khan",name:"Khan Academy",icon:"🎓",developer:"Khan Academy",category:"Study",price:"Free",description:"Learn school subjects through lessons, explanations and practice.",tags:["Math","Science","Lessons"],pros:"Offers free educational resources across many subjects.",cons:"It may not match every class's exact syllabus or teaching style.",pricing:"Core learning resources are free.",url:"https://www.khanacademy.org/"},
+{id:"todoist",name:"Todoist",icon:"✓",developer:"Doist",category:"Planning",price:"Freemium",description:"Keep track of tasks, deadlines and personal projects.",tags:["Tasks","Deadlines","Planning"],pros:"A focused task list helps make responsibilities easier to track.",cons:"Some planning features are reserved for paid plans.",pricing:"Free plan and paid plans; check current limits.",url:"https://todoist.com/"},
+{id:"calendar",name:"Google Calendar",icon:"📅",developer:"Google",category:"Planning",price:"Free",description:"Schedule classes, appointments, study blocks and reminders.",tags:["Schedule","Reminders","Time"],pros:"Useful for seeing commitments and planning time in one calendar.",cons:"Works best when you keep events and schedules updated.",pricing:"Personal calendar features are available free with a Google account.",url:"https://calendar.google.com/"},
+{id:"canva",name:"Canva",icon:"✿",developer:"Canva",category:"Creative",price:"Freemium",description:"Create presentations, posters, graphics and other visual projects.",tags:["Design","Presentations","Graphics"],pros:"Templates help beginners create polished-looking visuals.",cons:"Some assets, tools and collaboration features require payment.",pricing:"Free plan with optional paid plans and assets.",url:"https://www.canva.com/"},
+{id:"grammarly",name:"Grammarly",icon:"G",developer:"Grammarly",category:"Creative",price:"Freemium",description:"Get writing suggestions to help improve clarity and correctness.",tags:["Writing","Editing","English"],pros:"Can help identify writing issues and make revisions easier.",cons:"Suggestions need your judgment; don't accept every change automatically.",pricing:"Free writing assistance with optional paid features.",url:"https://www.grammarly.com/"},
+{id:"anki",name:"Anki",icon:"🧠",developer:"Anki",category:"Study",price:"Free",description:"Use spaced-repetition flashcards to review material over time.",tags:["Flashcards","Memory","Revision"],pros:"Review scheduling supports repeated practice and long-term recall.",cons:"Setting up good cards takes effort, and the interface can feel technical.",pricing:"Desktop version and AnkiWeb are free; some official mobile apps may cost money.",url:"https://apps.ankiweb.net/"},
+{id:"drive",name:"Google Drive",icon:"☁️",developer:"Google",category:"Storage",price:"Freemium",description:"Store files online and share documents with classmates or teammates.",tags:["Files","Cloud","Sharing"],pros:"Convenient for accessing and sharing school documents across devices.",cons:"Free storage is limited and shared files need appropriate permissions.",pricing:"Free storage allowance with optional paid storage plans.",url:"https://drive.google.com/"},
+{id:"microsofttodo",name:"Microsoft To Do",icon:"☑️",developer:"Microsoft",category:"Planning",price:"Free",description:"Create task lists, set reminders and organize daily responsibilities.",tags:["Tasks","Lists","Reminders"],pros:"A straightforward option for everyday task management.",cons:"Advanced project management may require a different tool.",pricing:"Available free with a Microsoft account.",url:"https://to-do.office.com/"},
+{id:"forest",name:"Forest",icon:"🌱",developer:"Seekrtech",category:"Planning",price:"Paid",description:"Use a growing virtual tree as a visual reminder to focus.",tags:["Focus","Habits","Study"],pros:"A playful visual approach can make focused work sessions more engaging.",cons:"It is not a full planner, and availability and pricing vary by platform.",pricing:"Paid options vary by platform; verify before purchasing.",url:"https://www.forestapp.cc/"},
+{id:"photomath",name:"Photomath",icon:"➗",developer:"Photomath",category:"Study",price:"Freemium",description:"Explore math problems and follow step-by-step explanations.",tags:["Math","Practice","Explanations"],pros:"Explanations can help learners examine the steps in a solution.",cons:"Use it to understand the method, not simply copy an answer.",pricing:"Free features and optional paid features; check current terms.",url:"https://photomath.com/"}
+];
+
+const $ = selector => document.querySelector(selector);
+const grid = $("#appGrid");
+const state = {query:"",category:"All",price:"All",savedOnly:false,sort:"featured",activeModal:null};
+let saved = new Set();
+let comparison = new Set();
+let toastTimer = null;
+let previousFocus = null;
+
+function readSet(key, validIds, maxItems=Infinity) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || "[]");
+    if (Array.isArray(value)) return new Set(value.filter(id => validIds.has(id)).slice(0,maxItems));
+  } catch {}
+  return new Set();
+}
+const validIds = new Set(apps.map(app => app.id));
+saved = readSet("alpha-appfinder-saved",validIds);
+comparison = readSet("alpha-appfinder-compare",validIds,3);
+
+function persist() {
+  try {
+    localStorage.setItem("alpha-appfinder-saved",JSON.stringify([...saved]));
+    localStorage.setItem("alpha-appfinder-compare",JSON.stringify([...comparison]));
+  } catch {
+    showToast("Browser storage is unavailable. Changes may not persist after closing this page.");
+  }
+  $("#savedCount").textContent = saved.size;
+}
+function esc(value) {
+  return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function showToast(message) {
+  const toast = $("#toast");
+  toast.textContent = message;
+  toast.classList.remove("hidden");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.add("hidden"),2800);
+}
+function visibleApps() {
+  const q = state.query.toLowerCase();
+  const result = apps.filter(a =>
+    [a.name,a.developer,a.description,a.category,a.price,...a.tags].join(" ").toLowerCase().includes(q) &&
+    (state.category==="All" || a.category===state.category) &&
+    (state.price==="All" || a.price===state.price) &&
+    (!state.savedOnly || saved.has(a.id))
+  );
+  if (state.sort==="az") result.sort((a,b)=>a.name.localeCompare(b.name));
+  return result;
+}
+function renderApps() {
+  const results = visibleApps();
+  $("#catalogTitle").innerHTML = state.savedOnly
+    ? 'Your saved tools<span class="gradient-text">.</span>'
+    : state.query ? 'Search results<span class="gradient-text">.</span>'
+    : 'Explore the collection<span class="gradient-text">.</span>';
+  $("#resultCount").textContent = `${results.length} ${results.length===1?"tool":"tools"} found` + (state.savedOnly?" · saved on this device":"");
+
+  if (!results.length) {
+    grid.innerHTML = `<div class="empty"><strong>No tools found yet.</strong><p>Try another search, choose a different filter, or reset your filters.</p><button class="button" id="emptyReset" type="button">Clear filters</button></div>`;
+    return;
+  }
+  grid.innerHTML = results.map((a,i)=>`
+    <article class="app-card" style="animation-delay:${Math.min(i*35,250)}ms">
+      <div class="app-top"><div class="app-icon" aria-hidden="true">${esc(a.icon)}</div>
+        <button type="button" class="save ${saved.has(a.id)?"saved":""}" data-save="${a.id}" aria-label="${saved.has(a.id)?"Remove":"Save"} ${esc(a.name)}" aria-pressed="${saved.has(a.id)}">${saved.has(a.id)?"♥":"♡"}</button>
+      </div>
+      <h3>${esc(a.name)}</h3><div class="developer">${esc(a.developer)} · ${esc(a.category)}</div>
+      <p class="app-description">${esc(a.description)}</p>
+      <div class="tags"><span class="tag ${a.price==="Free"?"free":a.price==="Paid"?"paid":""}">${a.price==="Free"?"Free":a.price==="Paid"?"Paid":"Free + paid"}</span>${a.tags.slice(0,2).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
+      <div class="app-footer">
+        <label class="compare-check"><input type="checkbox" data-compare="${a.id}" ${comparison.has(a.id)?"checked":""} ${!comparison.has(a.id)&&comparison.size>=3?"disabled":""}> Compare</label>
+        <button class="button" type="button" data-details="${a.id}">Explore tool ↗</button>
+      </div>
+    </article>`).join("");
+}
+function renderComparison() {
+  const chosen = apps.filter(a=>comparison.has(a.id));
+  $("#compareSelected").innerHTML = chosen.map(a=>`
+    <span class="compare-chip">${esc(a.icon)} ${esc(a.name)}
+      <button type="button" data-remove-compare="${a.id}" aria-label="Remove ${esc(a.name)} from comparison">×</button>
+    </span>`).join("") || '<span class="result-count">No tools selected yet.</span>';
+
+  $("#clearCompare").disabled = chosen.length===0;
+  if (chosen.length<2) {
+    $("#comparisonOutput").innerHTML = `<p class="result-count">${chosen.length===0?"Select at least two tools to start comparing.":"Select one more tool to see the comparison."}</p>`;
+    return;
+  }
+  const rows = [
+    ["Category",a=>a.category],["Pricing type",a=>a.price],
+    ["Description",a=>a.description],["Pros",a=>a.pros],
+    ["Things to consider",a=>a.cons],["Pricing details",a=>a.pricing]
+  ];
+  $("#comparisonOutput").innerHTML = `<div class="compare-table-wrap" role="region" aria-label="Tool comparison table" tabindex="0">
+    <table class="compare-table"><thead><tr><th scope="col">Feature</th>${chosen.map(a=>`<th scope="col">${esc(a.name)}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map(([label,get])=>`<tr><th scope="row">${label}</th>${chosen.map(a=>`<td>${esc(get(a))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+function refresh() { renderApps();renderComparison();persist(); }
+function setCategory(category) {
+  state.category=category;state.savedOnly=false;
+  document.querySelectorAll("[data-category]").forEach(button=>{
+    const active=button.dataset.category===category;
+    button.classList.toggle("active",active);
+    button.setAttribute("aria-pressed",String(active));
+  });
+  $("#savedNav").classList.remove("active");
+  $("#savedNav").setAttribute("aria-pressed","false");
+  refresh();
+}
+function setPrice(price) {
+  state.price=price;
+  document.querySelectorAll("[data-price]").forEach(button=>{
+    const active=button.dataset.price===price;
+    button.classList.toggle("active",active);
+    button.setAttribute("aria-pressed",String(active));
+  });
+  refresh();
+}
+function resetFilters() {
+  state.query="";state.category="All";state.price="All";state.savedOnly=false;state.sort="featured";
+  $("#searchInput").value="";$("#sortSelect").value="featured";
+  setCategory("All");setPrice("All");
+}
+function openDetails(id) {
+  const app=apps.find(a=>a.id===id);
+  if (!app) return;
+  previousFocus=document.activeElement;
+  state.activeModal=id;
+  $("#modalCategory").textContent=app.category.toUpperCase()+" TOOL";
+  $("#modalTitle").textContent=app.icon+"  "+app.name;
+  $("#modalDeveloper").textContent="Developed by "+app.developer;
+  $("#modalDescription").textContent=app.description;
+  $("#modalPros").textContent=app.pros;
+  $("#modalCons").textContent=app.cons;
+  $("#modalPricing").textContent=app.pricing;
+  $("#officialLink").href=app.url;
+  $("#officialLink").setAttribute("aria-label","Visit official website for "+app.name);
+  updateModalSave();
+  $("#modalBackdrop").classList.remove("hidden");
+  document.body.style.overflow="hidden";
+  $("#closeModal").focus();
+}
+function closeDetails() {
+  $("#modalBackdrop").classList.add("hidden");
+  document.body.style.overflow="";
+  state.activeModal=null;
+  if (previousFocus && typeof previousFocus.focus==="function") previousFocus.focus();
+}
+function updateModalSave() {
+  const active=saved.has(state.activeModal);
+  $("#modalSave").textContent=active?"♥ Saved":"♡ Save tool";
+  $("#modalSave").setAttribute("aria-pressed",String(active));
+}
+function toggleSaved(id) {
+  if (saved.has(id)) saved.delete(id); else saved.add(id);
+  refresh();
+  if (state.activeModal===id) updateModalSave();
+  showToast(saved.has(id)?"Tool saved on this device.":"Tool removed from saved items.");
+}
+function toggleCompare(id,checked) {
+  if (checked) {
+    if (comparison.has(id)) return;
+    if (comparison.size>=3) {
+      showToast("You can compare up to 3 tools. Remove one first.");
+      refresh();return;
+    }
+    comparison.add(id);
+  } else comparison.delete(id);
+  refresh();
+}
+function toggleSavedView() {
+  state.savedOnly = !state.savedOnly;
+
+  $("#savedNav").classList.toggle("active", state.savedOnly);
+  $("#savedNav").setAttribute("aria-pressed", String(state.savedOnly));
+
+  if (state.savedOnly) {
+    state.query = "";
+    state.category = "All";
+    state.price = "All";
+    state.sort = "featured";
+
+    $("#searchInput").value = "";
+    $("#sortSelect").value = "featured";
+
+    document.querySelectorAll("[data-category]").forEach(button => {
+      const active = button.dataset.category === "All";
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+
+    document.querySelectorAll("[data-price]").forEach(button => {
+      const active = button.dataset.price === "All";
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+  }
+
+  refresh();
+  $("#explore").scrollIntoView({ behavior: "smooth" });
+}
+
+$("#searchForm").addEventListener("submit",event=>{
+  event.preventDefault();
+  state.query=$("#searchInput").value.trim();state.savedOnly=false;
+  $("#savedNav").classList.remove("active");$("#savedNav").setAttribute("aria-pressed","false");
+  refresh();$("#explore").scrollIntoView({behavior:"smooth"});
+});
+$("#searchInput").addEventListener("input",event=>{
+  state.query=event.target.value.trim();state.savedOnly=false;
+  $("#savedNav").classList.remove("active");$("#savedNav").setAttribute("aria-pressed","false");
+  refresh();
+});
+document.querySelectorAll("[data-query]").forEach(button=>button.addEventListener("click",()=>{
+  $("#searchInput").value=button.dataset.query;
+  state.query=button.dataset.query;state.savedOnly=false;
+  $("#savedNav").classList.remove("active");$("#savedNav").setAttribute("aria-pressed","false");
+  refresh();$("#explore").scrollIntoView({behavior:"smooth"});
+}));
+document.querySelectorAll("[data-category]").forEach(button=>button.addEventListener("click",()=>{
+  setCategory(button.dataset.category);$("#explore").scrollIntoView({behavior:"smooth"});
+}));
+document.querySelectorAll("[data-price]").forEach(button=>button.addEventListener("click",()=>setPrice(button.dataset.price)));
+const resourceCards=[...document.querySelectorAll(".resource-card")];
+let activeResourceCategory="All";
+function filterResources() {
+  const query=$("#resourceSearch").value.trim().toLowerCase();
+  let visibleCount=0;
+  resourceCards.forEach(card=>{
+    const matchesCategory=activeResourceCategory==="All"||card.dataset.resourceCategory===activeResourceCategory;
+    const matchesQuery=card.textContent.toLowerCase().includes(query);
+    const visible=matchesCategory&&matchesQuery;
+    card.classList.toggle("hidden",!visible);
+    if(visible)visibleCount++;
+  });
+  $("#resourceCount").textContent=`${visibleCount} ${visibleCount===1?"resource":"resources"} found`;
+  let empty=$("#resourceEmpty");
+  if(!visibleCount&&!empty){
+    empty=document.createElement("div");empty.id="resourceEmpty";empty.className="resource-empty";empty.textContent="No links match that search. Try another keyword or category.";
+    $("#resourceGrid").append(empty);
+  } else if(visibleCount&&empty)empty.remove();
+}
+$("#resourceSearch").addEventListener("input",filterResources);
+document.querySelectorAll("[data-resource-filter]").forEach(button=>button.addEventListener("click",()=>{
+  activeResourceCategory=button.dataset.resourceFilter;
+  document.querySelectorAll("[data-resource-filter]").forEach(filter=>{
+    const active=filter===button;
+    filter.classList.toggle("active",active);
+    filter.setAttribute("aria-pressed",String(active));
+  });
+  filterResources();
+}));
+filterResources();
+$("#sortSelect").addEventListener("change",event=>{state.sort=event.target.value;refresh()});
+$("#resetButton").addEventListener("click",resetFilters);
+$("#savedNav").addEventListener("click",toggleSavedView);
+
+grid.addEventListener("click",event=>{
+  const saveButton=event.target.closest("[data-save]");
+  const detailsButton=event.target.closest("[data-details]");
+  const resetButton=event.target.closest("#emptyReset");
+  if (saveButton) toggleSaved(saveButton.dataset.save);
+  if (detailsButton) openDetails(detailsButton.dataset.details);
+  if (resetButton) resetFilters();
+});
+grid.addEventListener("change",event=>{
+  const checkbox=event.target.closest("[data-compare]");
+  if (checkbox) toggleCompare(checkbox.dataset.compare,checkbox.checked);
+});
+$("#compareSelected").addEventListener("click",event=>{
+  const button=event.target.closest("[data-remove-compare]");
+  if (button) toggleCompare(button.dataset.removeCompare,false);
+});
+$("#clearCompare").addEventListener("click",()=>{
+  comparison.clear();refresh();showToast("Comparison cleared.");
+});
+$("#closeModal").addEventListener("click",closeDetails);
+$("#modalSave").addEventListener("click",()=>{if(state.activeModal)toggleSaved(state.activeModal)});
+$("#modalBackdrop").addEventListener("click",event=>{if(event.target===$("#modalBackdrop"))closeDetails()});
+document.addEventListener("keydown",event=>{
+  if (!state.activeModal) return;
+  if (event.key==="Escape") closeDetails();
+  if (event.key==="Tab") {
+    const focusable=[...$("#modalBackdrop").querySelectorAll('a[href],button:not(:disabled),input:not(:disabled),select:not(:disabled),[tabindex="0"]')];
+    if (!focusable.length) return;
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if (event.shiftKey && document.activeElement===first) {event.preventDefault();last.focus()}
+    else if (!event.shiftKey && document.activeElement===last) {event.preventDefault();first.focus()}
+  }
+});
+
+persist();
+document.querySelectorAll("[data-category]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.category==="All")));
+document.querySelectorAll("[data-price]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.price==="All")));
+refresh();
+</script>
+</body>
+</html>
